@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\V1\TicketController;
+use App\Http\Controllers\Api\AuthController;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,7 +10,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/login',[AuthController::class,'login']);
-Route::post('/login',[AuthController::class, 'loginUser']);
+Route::post('/login',[AuthController::class, 'login']);
+
+Route::get('/tickets',[TicketController::class, 'index']);
+
 
 Route::post('/register',[AuthController::class, 'register']);
+ 
