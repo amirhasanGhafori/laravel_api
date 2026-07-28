@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/login',[AuthController::class, 'login']);
 
 Route::get('/tickets',[TicketController::class, 'index']);
-
+Route::middleware('auth:sanctum')->post('/logout',[AuthController::class,'logout']);
 
 Route::post('/register',[AuthController::class, 'register']);
  
