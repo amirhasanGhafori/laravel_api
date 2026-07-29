@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthorTicketsController;
 use App\Http\Controllers\Api\V1\TicketController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->apiResource('tickets',TicketController::class);
+Route::middleware('auth:sanctum')->apiResource('users.tickets',AuthorTicketsController::class);
 
 Route::middleware('auth:sanctum')->apiResource('users',UserController::class);
 
