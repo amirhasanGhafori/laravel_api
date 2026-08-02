@@ -10,6 +10,7 @@ abstract class QueryFilter
 
     protected Builder $builder;
     protected Request $request;
+    protected $sortable = [];
 
 
     public function __construct(Request $request)
@@ -17,6 +18,19 @@ abstract class QueryFilter
         $this->request = $request;
     }
 
+
+    public function apply(Builder $builder)
+    {
+        $this->builder = $builder;
+
+        foreach ($this->request->all() as $key => $value) {
+            if (method_exists($this, $key)) {
+                $this->$key($value);
+            }
+        }
+
+        return $builder;
+    }
 
     protected function filter($arr)
     {
@@ -29,19 +43,27 @@ abstract class QueryFilter
         return $this->builder;
     }
 
-    public function apply(Builder $builder)
-    {
-        $this->builder = $builder;
 
-        dd($this->request->all());
-
-        foreach ($this->request->all() as $key => $value) {
-            if (method_exists($this, $key)) {
-                $this->$key($value);
+    protected function sort($value){
+        $sortAttrubutes = explode(',',$value);
+        foreach($sortAttrubutes as $sortAttrubute){
+            $direction = 'asc';
+            if(strpos($sortAttrubute,'-')===0){
+                $direction = 'desc';
+                $sortAttrubute = substr($sortAttrubute,1);
             }
+
+            if(!in_array($sortAttrubute,$this->sortable) && !array_key_exists($sortAttrubute,$this->sortable)){
+                continue;
+            }
+
+            $columnName = $this->sortable[$sortAttrubute] ?? null;
+
+            if($columnName === null){
+                $columnName = $sortAttrubute;
+            }
+
+            $this->builder->orderBy($columnName,$direction);
         }
-
-
-        return $builder;
     }
 }
