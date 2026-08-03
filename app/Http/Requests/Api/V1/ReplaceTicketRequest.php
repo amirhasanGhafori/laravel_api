@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Permissions\V1\Abilities;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Override;
 
-class StoreTicketRequest extends BaseTicketRequest
+class ReplaceTicketRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,15 +27,8 @@ class StoreTicketRequest extends BaseTicketRequest
             'data.attributes.title' => 'required|string',
             'data.attributes.description' => 'required|string',
             'data.attributes.status' => 'required|string|in:A,C,H,X',
-            'data.relationships.author.data.id' => 'required|integer|exists:users,id'
+            'data.relationships.author.data.id'=>'required'
         ];
-        $user = $this->user();
-        if ($this->routeIs('tickets.store')) {
-            if ($this->user()->tokenCan(Abilities::CreateOwnTicket)) {
-                $rules['data.relationships.author.data.id'] .= '|size:' . $user->id;
-            }
-        }
-
 
         return $rules;
     }
