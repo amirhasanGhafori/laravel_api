@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Permissions\V1\Abilities;
 use Illuminate\Auth\Access\Response;
 
-class TicketPolicy
+class UserPolicy
 {
 
     /**
@@ -31,42 +31,30 @@ class TicketPolicy
      */
     public function create(User $user): bool
     {
-        return $user->tokenCan(Abilities::CreateTicket) || $user->tokenCan(Abilities::CreateOwnTicket);
+        return $user->tokenCan(Abilities::CreateUser);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Ticket $ticket): bool
+    public function update(User $user): bool
     {
-        if ($user->tokenCan(Abilities::UpdateTicket)) {
-            return true;
-        } else if ($user->tokenCan(Abilities::UpdateOwnTicket)) {
-            return $user->id === $ticket->user_id;
-        }
-
-        return false;
+        return $user->tokenCan(Abilities::UpdateUser);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Ticket $ticket): bool
+    public function delete(User $user): bool
     {
-        if ($user->tokenCan(Abilities::DeleteTicket)) {
-            return true;
-        } else if ($user->tokenCan(Abilities::DeleteOwnTicket)) {
-            return $user->id === $ticket->user_id;
-        }
-
-        return false;
+        return $user->tokenCan(Abilities::DeleteUser);
     }
 
 
 
-    public function replace(User $user, Ticket $ticket): bool
+    public function replace(User $user): bool
     {
-        return $user->tokenCan(Abilities::ReplaceOwnTicket) || $user->tokenCan(Abilities::ReplaceTicket);
+        return $user->tokenCan(Abilities::ReplaceUser);
     }
 
     /**

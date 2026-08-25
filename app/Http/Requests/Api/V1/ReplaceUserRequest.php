@@ -4,8 +4,9 @@ namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
-class StoreUserRequest extends BaseUserRequest
+class ReplaceUserRequest extends BaseUserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +27,17 @@ class StoreUserRequest extends BaseUserRequest
             'data.attributes.name' => 'required|string',
             'data.attributes.email' => 'required|email',
             'data.attributes.isManager' => 'required',
-            'data.attributes.password' => 'required|string'
+            'data.attributes.password'=>'required|string'
         ];
+
         return $rules;
+    }
+
+    #[Override]
+    public function messages()
+    {
+        return [
+            'data.attributes.status' => 'the data.attributes.status value is invalid. please use A, C , H OR X.'
+        ];
     }
 }

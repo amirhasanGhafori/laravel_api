@@ -37,8 +37,18 @@ class StoreTicketRequest extends BaseTicketRequest
             }
         }
 
-
         return $rules;
+    }
+
+
+    #[Override]
+    protected function prepareForValidation()
+    {
+        if($this->routeIs('users.tickets.store')){
+            $this->merge([
+                'data.relationships.author.data.id'=>$this->route('user')
+            ]);
+        }
     }
 
     #[Override]

@@ -39,7 +39,6 @@ final class Abilities
             ];
         } else {
             return [
-                self::CreateOwnTicket,
                 self::UpdateOwnTicket,
                 self::DeleteOwnTicket,
                 self::ReplaceOwnTicket

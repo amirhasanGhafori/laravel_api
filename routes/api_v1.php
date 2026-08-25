@@ -17,9 +17,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('tickets/{ticket}', [TicketController::class, 'update']);
 
     Route::apiResource('users.tickets', AuthorTicketsController::class)->except(['update']);
-    Route::put('users/{user}/tickets/{ticket}', [AuthorTicketsController::class,'replace']);
-    Route::patch('users/{user}/tickets/{ticket}', [AuthorTicketsController::class,'update'])->name('author.ticket.update');
+    Route::put('users/{user}/tickets/{ticket}', [AuthorTicketsController::class, 'replace']);
+    Route::patch('users/{user}/tickets/{ticket}', [AuthorTicketsController::class, 'update'])->name('author.ticket.update');
 
 
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('users', UserController::class)->except('update');
+    Route::patch('users/{user}', [UserController::class, 'update']);
+    Route::put('users/{users}', [UserController::class, 'replace']);
 });

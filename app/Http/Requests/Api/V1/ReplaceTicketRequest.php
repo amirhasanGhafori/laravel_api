@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Override;
 
-class ReplaceTicketRequest extends FormRequest
+class ReplaceTicketRequest extends BaseTicketRequest
 {
     /**
      * Determine if the user is authorized to make this request.

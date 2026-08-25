@@ -11,16 +11,18 @@ class BaseTicketRequest extends FormRequest
 
 
 
-    public function mappedAttributes()
+    public function mappedAttributes(array $atherAttributes = [])
     {
-        $attributeMap = [
-            'data.attributes.title' => 'title',
-            'data.attributes.description' => 'description',
-            'data.attributes.status' => 'status',
-            'data.attributes.created_at' => 'created_at',
-            'data.attributes.updated_at' => 'updated_at',
-            'data.relationships.author.data.id' => 'user_id'
-        ];
+        $attributeMap = array_merge(
+            [
+                'data.attributes.title' => 'title',
+                'data.attributes.description' => 'description',
+                'data.attributes.status' => 'status',
+                'data.attributes.created_at' => 'created_at',
+                'data.attributes.updated_at' => 'updated_at',
+                'data.relationships.author.data.id' => 'user_id'
+            ]
+        ,$atherAttributes);
 
 
         $attributesToUpdate = [];
