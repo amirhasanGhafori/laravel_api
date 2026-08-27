@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->except('update');
     Route::patch('users/{user}', [UserController::class, 'update']);
     Route::put('users/{users}', [UserController::class, 'replace']);
+    //group route manager
 });
