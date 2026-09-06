@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
+use App\Models\Login;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,15 +18,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory(10)->create();
+        $companies = Company::factory(6000)->create();
+
+
+        $users = User::factory(100000)->recycle($companies)->create();
+
+
+
+        $logins = Login::factory(90000)
+            ->recycle($users)
+            ->create();
 
         Ticket::factory(100)->recycle($users)->create();
 
         User::factory()->create([
             'name' => 'amirhasan',
             'email' => 'amirhasan@gmail.com',
-            'password'=>'13771120',
-            'is_manager'=>true
+            'password' => '13771120',
+            'is_manager' => true
         ]);
     }
 }

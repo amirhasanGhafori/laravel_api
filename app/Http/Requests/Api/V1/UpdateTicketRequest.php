@@ -22,7 +22,7 @@ class UpdateTicketRequest extends BaseTicketRequest
             'data.relationships.author.data.id' => 'sometimes'
         ];
 
-        if($this->user()->tokenCan(Abilities::UpdateOwnTicket)){
+        if($this->user()?->tokenCan(Abilities::UpdateOwnTicket)){
             $rules['data.relationships.author.data.id'] = 'prohibited';
         }
 
