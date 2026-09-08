@@ -1,23 +1,32 @@
 @component('welcome')
 
+    {{-- Navigation Header --}}
+
     <div class="space-y-4">
 
         {{-- Header --}}
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h1 class="text-lg font-semibold text-gray-900">
-                    کاربران
+                    پست‌ها
                 </h1>
                 <p class="mt-1 text-sm text-gray-500">
-                    لیست کاربران و اطلاعات آخرین ورود
+                    لیست پست‌ها و وضعیت انتشار
                 </p>
             </div>
 
-            <div class="text-sm text-gray-500">
-                تعداد:
-                <span class="font-semibold text-gray-900">
-                    {{ $users->total() }}
-                </span>
+            <div class="flex items-center gap-3">
+                <div class="text-sm text-gray-500">
+                    تعداد:
+                    <span class="font-semibold text-gray-900">
+                        {{ $posts->total() }}
+                    </span>
+                </div>
+
+                <a href=""
+                   class="inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700">
+                    + پست جدید
+                </a>
             </div>
         </div>
 
@@ -46,7 +55,7 @@
                             type="text"
                             name="search"
                             value="{{ request('search') }}"
-                            placeholder="جستجو بر اساس نام یا ایمیل..."
+                            placeholder="جستجو بر اساس عنوان یا محتوا..."
                             class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 pr-10 pl-4 text-sm text-gray-900 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
                         >
                     </div>
@@ -79,79 +88,53 @@
 
                     <thead class="bg-gray-50 text-xs font-semibold text-gray-600">
                         <tr>
-                            <th class="whitespace-nowrap px-6 py-4">
-                                نام 
-                            </th>
-
-                            <th class="whitespace-nowrap px-6 py-4">
-                                ایمیل  
-                            </th>
-
-                            <th class="whitespace-nowrap px-6 py-4">
-                                آخرین ورود
-                            </th>
-
-                            <th class="whitespace-nowrap px-6 py-4">
-                                شرکت
-                            </th>
-
-                            <th class="whitespace-nowrap px-6 py-4">
-                                ایمیل شرکت
-                            </th>
+                            <th class="whitespace-nowrap px-6 py-4">عنوان</th>
+                            <th class="whitespace-nowrap px-6 py-4">نویسنده</th>
+                            <th class="whitespace-nowrap px-6 py-4">وضعیت</th>
+                            <th class="whitespace-nowrap px-6 py-4">تاریخ انتشار</th>
                         </tr>
                     </thead>
 
                     <tbody class="divide-y divide-gray-100">
 
-                        @forelse ($users as $user)
+                        @forelse ($posts as $post)
 
                             <tr class="transition hover:bg-gray-50">
 
-                                <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
-                                    {{ $user->firstName . ' ' . $user->lastName }}
-                                </td>
-
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $user->email }}
-                                </td>
-
-                                 <td class="px-6 py-4 text-gray-600">
-                                    {{ $user->last_login_at?->diffForHumans() ?? 'بدون ورود' }}
-                                </td>
-
-                                {{-- <td class="whitespace-nowrap px-6 py-4">
-                                    @if($user->lastLogin)
-                                        <div class="text-gray-900">
-                                            {{ $user->lastLogin->created_at?->diffForHumans() }}
-                                        </div>
-
-                                        @if($user->lastLogin->ip_address)
-                                            <div class="mt-1 text-xs text-gray-400">
-                                                {{ $user->lastLogin->ip_address }}
-                                            </div>
-                                        @endif
-                                    @else
-                                        <span class="text-gray-400">
-                                            بدون ورود
-                                        </span>
-                                    @endif
-                                </td> --}}
-
+                                {{-- Title --}}
                                 <td class="px-6 py-4">
-                                    @if($user->company)
-                                        <span class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
-                                            {{ $user->company->name }}
+                                    <div class="font-medium text-gray-900">
+                                        {{ $post->title }} <span class="bg-purple-400 p-2 text-xs text-white rounded-full">{{ number_format($post->score, 1) }}</span>
+                                    </div>
+                                    <div class="mt-1 text-xs text-gray-400">
+                                        {{ $post->slug }}
+                                    </div>
+                                </td>
+
+                                {{-- Author --}}
+                                <td class="whitespace-nowrap px-6 py-4 text-gray-600">
+                                    {{ $post->author->firstName .' '. $post->author->lastName }}
+                                </td>
+
+                                {{-- Status --}}
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    @if($post->is_published)
+                                        <span class="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+                                            منتشر شده
                                         </span>
                                     @else
-                                        <span class="text-gray-400">
-                                            —
+                                        <span class="inline-flex rounded-full bg-yellow-50 px-3 py-1 text-xs font-medium text-yellow-700">
+                                            پیش‌نویس
                                         </span>
                                     @endif
                                 </td>
 
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $user->company?->email ?? '—' }}
+                                {{-- Published At --}}
+                                <td class="whitespace-nowrap px-6 py-4 text-gray-600">
+                                    {{ $post->published_at?->format('Y/m/d H:i') ?? '—' }}
                                 </td>
+
+                           
 
                             </tr>
 
@@ -178,11 +161,11 @@
                                         </div>
 
                                         <p class="text-sm font-medium text-gray-900">
-                                            کاربری پیدا نشد
+                                            پستی پیدا نشد
                                         </p>
 
                                         <p class="mt-1 text-sm text-gray-500">
-                                            عبارت جستجو را تغییر دهید.
+                                            عبارت جستجو را تغییر دهید یا پست جدیدی بسازید.
                                         </p>
                                     </div>
                                 </td>
@@ -196,9 +179,9 @@
             </div>
 
             {{-- Pagination --}}
-            @if($users->hasPages())
+            @if($posts->hasPages())
                 <div class="border-t border-gray-100 px-6 py-4">
-                    {{ $users->withQueryString()->links() }}
+                    {{ $posts->withQueryString()->links() }}
                 </div>
             @endif
 

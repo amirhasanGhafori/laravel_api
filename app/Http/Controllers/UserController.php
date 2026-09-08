@@ -15,9 +15,12 @@ class UserController extends Controller
         // ->simplePaginate();
 
         $users = User::query()
-        ->with(['logins', 'company'])
+        ->with(['company'])
+        ->withLastLogin()
         ->search(request('search'))
+        ->orderBy('last_login_at', 'desc')
         ->paginate(35);
+        
         return view('users',['users'=>$users]);
     }
 }

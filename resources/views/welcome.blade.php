@@ -15,6 +15,8 @@
 
 <body class="bg-[#FDFDFC]">
 
+    <x-header />
+
     <div class="container mx-auto">
         {{ $slot }}
     </div>

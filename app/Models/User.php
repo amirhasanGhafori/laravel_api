@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use PhpParser\Node\Expr\FuncCall;
+use App\Model as ModelCustom;
 
 #[Fillable(['name', 'email', 'password', 'is_manager'])]
 #[Hidden(['password', 'remember_token'])]
@@ -37,7 +38,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_manager' => 'boolean'
+            'is_manager' => 'boolean',
+            'last_login_at' => 'datetime'
         ];
     }
 
@@ -107,6 +109,8 @@ class User extends Authenticatable
     {
         //speed 8 ms
 
+
+
         collect(str_getcsv($searchTerm, ' ', '"'))
             ->filter()
             ->each(function ($term) use ($query) {
@@ -148,7 +152,7 @@ class User extends Authenticatable
         //         });
         //     });
 
-        
+
 
         //speed 1s
         //Step 1 <=============================>
