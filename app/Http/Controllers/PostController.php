@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ReconcileAccount;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function index()
     {
+        $user = User::find(11);
+        dispatch(new ReconcileAccount($user));
+
+
         $posts = Post::with('author')
             ->when(request('search'), function ($query, $search) {
                 $query

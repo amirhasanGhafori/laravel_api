@@ -9,6 +9,8 @@
     "sail": false,
     "skills": [
         "laravel-best-practices",
+        "pulse-development",
+        "livewire-development",
         "tailwindcss-development"
     ]
 }
