@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Jobs\ReconcileAccount;
+use Closure;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +32,15 @@ class Post extends Model
                 $post->slug = Str::slug($post->title);
             }
         });
+    }
+
+    public function handle($string, Closure $next)
+    {
+        // Process the string
+        $user = User::find(11);
+        ReconcileAccount::dispatch($user)->onQueue('redis');
+        // Pass the processed string to the next closure
+        return $next($string);
     }
 
 

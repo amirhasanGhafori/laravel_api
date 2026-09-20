@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index()
     {
         $user = User::find(11);
-        dispatch(new ReconcileAccount($user));
+        dispatch(new ReconcileAccount($user))->onQueue('redis');
 
 
         $posts = Post::with('author')
@@ -28,4 +28,5 @@ class PostController extends Controller
 
         return view('posts', compact('posts'));
     }
+
 }
