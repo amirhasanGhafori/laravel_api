@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
-use App\Models\Login;
-use App\Models\Post;
-use App\Models\Ticket;
-use App\Models\User;
+use Modules\Ticket\Models\Ticket;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Company\Models\Company;
+use Modules\Post\Models\Post;
+use Modules\User\Models\Login;
+use Modules\User\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,19 +19,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $companies = Company::factory(6000)->create();
+        $companies = Company::factory(500)->create();
 
 
-        $users = User::factory(20000)->recycle($companies)->create();
+        $users = User::factory(1000)->recycle($companies)->create();
 
 
 
-        Login::factory(25000)
+        Login::factory(1500)
             ->recycle($users)
             ->create();
 
         Ticket::factory(100)->recycle($users)->create();
 
-        Post::factory(30000)->recycle($users)->create();
+        Post::factory(100)->recycle($users)->create();
     }
 }

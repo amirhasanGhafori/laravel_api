@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
+use Modules\User\Models\User;
 use App\Permissions\V1\Abilities;
 use PHPUnit\Framework\TestCase;
 

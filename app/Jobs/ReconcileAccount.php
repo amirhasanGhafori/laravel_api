@@ -2,12 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
+use Modules\User\Models\User;
 
 class ReconcileAccount implements ShouldQueue
 {

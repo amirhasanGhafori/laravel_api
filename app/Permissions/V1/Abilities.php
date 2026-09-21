@@ -2,7 +2,7 @@
 
 namespace App\Permissions\V1;
 
-use App\Models\User;
+use Modules\User\Models\User;
 
 final class Abilities
 {

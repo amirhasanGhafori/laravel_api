@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ReconcileAccount;
-use App\Models\Post;
-use App\Models\User;
-use Illuminate\Http\Request;
+use Modules\Post\Models\Post as ModelsPost;
+use Modules\User\Models\User;
 
 class PostController extends Controller
 {
@@ -15,7 +14,7 @@ class PostController extends Controller
         dispatch(new ReconcileAccount($user))->onQueue('redis');
 
 
-        $posts = Post::with('author')
+        $posts = ModelsPost::with('author')
             ->when(request('search'), function ($query, $search) {
                 $query
                     ->selectRaw('*, MATCH(title, body) AGAINST(? IN BOOLEAN MODE) AS score', [$search])

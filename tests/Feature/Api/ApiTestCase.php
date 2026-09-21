@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
+use Modules\User\Models\User;
 use App\Permissions\V1\Abilities;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
