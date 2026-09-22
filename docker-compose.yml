@@ -21,6 +21,8 @@ services:
     ports:
       - "8000:8000"
 
+    command: php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+
     depends_on:
       database:
         condition: service_healthy
@@ -69,7 +71,7 @@ services:
       - .:/var/www
     depends_on:
       - redis
-    command: php artisan queue:work --tries=3
+    command: php artisan queue:work --queue=redis -vvv --tries=3 --timeout=18
 
   redis:
     image: redis:alpine

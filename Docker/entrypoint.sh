@@ -40,11 +40,10 @@ if [ "$role" = "app" ]; then
 
 
     # Start Laravel HTTP server
-    exec php artisan serve \
-        --host=0.0.0.0 \
-        --port="${PORT:-8000}"
+    exec "$@"
+    
 elif [ "$role" = "queue" ]; then
     echo "Starting Laravel queue worker..."
-    exec php artisan queue:work --queue=redis -vvv --tries=3 --timeout=18
+    exec "$@"
 fi
 

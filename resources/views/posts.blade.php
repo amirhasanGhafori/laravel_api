@@ -104,21 +104,21 @@
                                 {{-- Title --}}
                                 <td class="px-6 py-4">
                                     <div class="font-medium text-gray-900">
-                                        {{ $post->title }} <span class="bg-purple-400 p-2 text-xs text-white rounded-full">{{ number_format($post->score, 1) }}</span>
+                                        {{ $post['title'] }} <span class="bg-purple-400 p-2 text-xs text-white rounded-full">{{ number_format($post['score'] ?? 0, 1) }}</span>
                                     </div>
                                     <div class="mt-1 text-xs text-gray-400">
-                                        {{ $post->slug }}
+                                        {{ $post['slug'] }}
                                     </div>
                                 </td>
 
                                 {{-- Author --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-gray-600">
-                                    {{ $post->author->firstName .' '. $post->author->lastName }}
+                                    {{ $post['author']['firstName'] .' '. $post['author']['lastName'] }}
                                 </td>
 
                                 {{-- Status --}}
                                 <td class="whitespace-nowrap px-6 py-4">
-                                    @if($post->is_published)
+                                    @if(isset($post['is_published']))
                                         <span class="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
                                             منتشر شده
                                         </span>
@@ -131,7 +131,7 @@
 
                                 {{-- Published At --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-gray-600">
-                                    {{ $post->published_at?->format('Y/m/d H:i') ?? '—' }}
+                                    {{ $post['published_at'] }}
                                 </td>
 
                            
