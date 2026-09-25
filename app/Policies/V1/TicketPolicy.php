@@ -5,7 +5,8 @@ namespace App\Policies\V1;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Permissions\V1\Abilities;
-use Illuminate\Auth\Access\Response;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class TicketPolicy
 {

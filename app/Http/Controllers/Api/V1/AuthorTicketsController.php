@@ -14,6 +14,7 @@ use App\Policies\V1\TicketPolicy;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthorTicketsController extends ApiController
 {
@@ -37,7 +38,7 @@ class AuthorTicketsController extends ApiController
                 'error' => 'the provided user id does not exists.'
             ]);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to store that resource.', 403);
+            return $this->error('You are not authorized to store that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -59,9 +60,9 @@ class AuthorTicketsController extends ApiController
 
             return new TicketResource($ticket);
         } catch (ModelNotFoundException $th) {
-            return $this->error('Ticket Not Found', 404);
+            return $this->error('Ticket Not Found', Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to update that resource.', 403);
+            return $this->error('You are not authorized to update that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -79,9 +80,9 @@ class AuthorTicketsController extends ApiController
             $ticket->update($request->mappedAttributes());
             return new TicketResource($ticket);
         } catch (ModelNotFoundException $th) {
-            return $this->error('Ticket Not Found', 404);
+            return $this->error('Ticket Not Found', Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to replace that resource.', 403);
+            return $this->error('You are not authorized to replace that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -96,11 +97,11 @@ class AuthorTicketsController extends ApiController
             $this->isAble('delete', $ticket);
             $ticket->delete();
 
-            return $this->error('Ticket Not Deleted.You Not Permission', 403);
+            return $this->error('Ticket Not Deleted.You Not Permission', Response::HTTP_FORBIDDEN);
         } catch (ModelNotFoundException $th) {
-            return $this->error('Ticket Not Found', 404);
+            return $this->error('Ticket Not Found', Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to Delete that resource.', 403);
+            return $this->error('You are not authorized to Delete that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 }

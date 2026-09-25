@@ -11,6 +11,7 @@ use App\Http\Requests\Api\V1\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends ApiController
 {
@@ -35,7 +36,7 @@ class UserController extends ApiController
                 'error' => 'the provided user id does not exists.'
             ]);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to store that resource.', 403);
+            return $this->error('You are not authorized to store that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -70,9 +71,9 @@ class UserController extends ApiController
 
             return new UserResource($user);
         } catch (ModelNotFoundException $th) {
-            return $this->error($th->getMessage(), 404);
+            return $this->error($th->getMessage(), Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to update that resource.', 403);
+            return $this->error('You are not authorized to update that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -93,9 +94,9 @@ class UserController extends ApiController
 
             return new UserResource($user);
         } catch (ModelNotFoundException $th) {
-            return $this->error('Ticket Not Found', 404);
+            return $this->error('Ticket Not Found', Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to Replace that resource.', 403);
+            return $this->error('You are not authorized to Replace that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -111,9 +112,9 @@ class UserController extends ApiController
             $user->delete();
             return $this->ok('User Successfully Delete');
         } catch (ModelNotFoundException $th) {
-            return $this->error('Ticket not found.', 404);
+            return $this->error('Ticket not found.', Response::HTTP_NOT_FOUND);
         } catch (AuthorizationException $ex) {
-            return $this->error('You are not authorized to Delete that resource.', 403);
+            return $this->error('You are not authorized to Delete that resource.', Response::HTTP_FORBIDDEN);
         }
     }
 }

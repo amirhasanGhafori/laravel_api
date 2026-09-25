@@ -131,7 +131,7 @@
 
                                 {{-- Published At --}}
                                 <td class="whitespace-nowrap px-6 py-4 text-gray-600">
-                                    {{ $post['published_at'] }}
+                                    {{ \Carbon\Carbon::parse($post['published_at'])->diffForHumans() }}
                                 </td>
 
                            
